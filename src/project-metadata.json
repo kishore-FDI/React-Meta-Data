@@ -1,0 +1,86 @@
+{
+  "generatedAt": "2025-02-02T15:26:43.388Z",
+  "components": [
+    {
+      "filePath": "d:\\PROJECTS\\manivenugopal\\gym-website\\src\\App.js",
+      "title": "App",
+      "description": "",
+      "textContent": []
+    },
+    {
+      "filePath": "d:\\PROJECTS\\manivenugopal\\gym-website\\src\\components\\footer\\Footer.jsx",
+      "title": "Footer",
+      "description": "https://www.facebook.com/mass.rose.319/",
+      "textContent": [
+        "https://www.facebook.com/mass.rose.319/",
+        "mailto:mmc369gym@gmail.com",
+        "https://wa.me/+919444439640",
+        "https://www.instagram.com/mmc369gym/profilecard/?igsh=MWZ5a29ycjdscmFlcw=="
+      ]
+    },
+    {
+      "filePath": "d:\\PROJECTS\\manivenugopal\\gym-website\\src\\components\\header\\Header.jsx",
+      "title": "Header",
+      "description": "menu",
+      "textContent": [
+        "menu"
+      ]
+    },
+    {
+      "filePath": "d:\\PROJECTS\\manivenugopal\\gym-website\\src\\components\\hero-section\\HeroSection.jsx",
+      "title": "HeroSection",
+      "description": "",
+      "textContent": []
+    },
+    {
+      "filePath": "d:\\PROJECTS\\manivenugopal\\gym-website\\src\\components\\join\\Join.jsx",
+      "title": "Join",
+      "description": "",
+      "textContent": []
+    },
+    {
+      "filePath": "d:\\PROJECTS\\manivenugopal\\gym-website\\src\\components\\plans\\Plans.jsx",
+      "title": "Plans",
+      "description": "",
+      "textContent": []
+    },
+    {
+      "filePath": "d:\\PROJECTS\\manivenugopal\\gym-website\\src\\components\\programs\\Programs.jsx",
+      "title": "1",
+      "description": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3892.615456509402!2d79.88847799999999!3d12.673199799999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a52e3590f2189a1%3A0x906a390b6ac7ba92!2sMMC%20369%20GYM%20%26%20NUTRITION%20SUPPLEMENTS!5e0!3m2!1sen!2sin!4v1735914539981!5m2!1sen!2sin",
+      "textContent": [
+        "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3892.615456509402!2d79.88847799999999!3d12.673199799999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a52e3590f2189a1%3A0x906a390b6ac7ba92!2sMMC%20369%20GYM%20%26%20NUTRITION%20SUPPLEMENTS!5e0!3m2!1sen!2sin!4v1735914539981!5m2!1sen!2sin"
+      ]
+    },
+    {
+      "filePath": "d:\\PROJECTS\\manivenugopal\\gym-website\\src\\components\\reasons\\Reasons.jsx",
+      "title": "Reasons",
+      "description": "",
+      "textContent": []
+    },
+    {
+      "filePath": "d:\\PROJECTS\\manivenugopal\\gym-website\\src\\components\\testimonials\\Testimonials.jsx",
+      "title": "Testimonials",
+      "description": "",
+      "textContent": []
+    },
+    {
+      "filePath": "d:\\PROJECTS\\manivenugopal\\gym-website\\src\\data\\plansData.js",
+      "title": "plansData",
+      "description": "",
+      "textContent": []
+    },
+    {
+      "filePath": "d:\\PROJECTS\\manivenugopal\\gym-website\\src\\data\\programsData.js",
+      "title": "programsData",
+      "description": "",
+      "textContent": []
+    },
+    {
+      "filePath": "d:\\PROJECTS\\manivenugopal\\gym-website\\src\\index.js",
+      "title": "index",
+      "description": "",
+      "textContent": []
+    }
+  ]
+}
