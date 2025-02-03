@@ -63,8 +63,8 @@ export function activate(context: vscode.ExtensionContext) {
 						const content = fs.readFileSync(componentPath, 'utf-8');
 						const componentMetadata = await extractMetaData(content, componentPath);
 						metadata.components.push({
-							filePath: path.relative(rootPath, componentPath),
-							...componentMetadata
+							...componentMetadata,
+							filePath: path.relative(rootPath, componentPath)
 						});
 					} catch (error) {
 						console.error(`Error processing ${componentPath}:`, error);
@@ -305,7 +305,7 @@ async function extractMetaData(sourceCode: string, filePath: string = ''): Promi
 					return;
 				}
 
-				const parentName = path.parent.name?.name?.toLowerCase() || '';
+				const parentName = (path.parent as { name?: { name: string } }).name?.name?.toLowerCase() || '';
 				
 				if (path.node.value) {
 					let texts: string[] = [];
