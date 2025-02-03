@@ -250,38 +250,19 @@ async function extractMetaData(sourceCode: string, filePath: string = ''): Promi
 			// Handle variable declarations (for non-exported variables)
 			VariableDeclarator(path) {
 				try {
-					if (path.node.init) {
-						if (path.node.init.type === 'ArrayExpression') {
-							path.node.init.elements.forEach((element: any) => {
-								if (element.type === 'ObjectExpression') {
-									element.properties.forEach((prop: any) => {
-										// Skip JSX/SVG content
-										if (prop.key.name === 'icon') {
-											return;
-										}
-										
-										// Extract string values
-										if (prop.value?.type === 'StringLiteral') {
-											const text = prop.value.value.trim();
-											if (shouldIncludeText(text)) {
-												metadata.textContent.push(text);
-											}
-										}
-										// Extract array values (like features)
-										else if (prop.value?.type === 'ArrayExpression') {
-											prop.value.elements.forEach((item: any) => {
-												if (item?.type === 'StringLiteral') {
-													const text = item.value.trim();
-													if (shouldIncludeText(text)) {
-														metadata.textContent.push(text);
-													}
-												}
-											});
-										}
-									});
-								}
-							});
-						}
+					// Handle arrow function components
+					if (path.node.init?.type === 'ArrowFunctionExpression' || 
+						path.node.init?.type === 'FunctionExpression') {
+						path.traverse({
+							VariableDeclarator(varPath) {
+								handleArrayLiterals(varPath, metadata);
+							}
+						});
+					}
+					
+					// Handle regular variable declarations
+					if (path.node.init?.type === 'ArrayExpression') {
+						handleArrayLiterals(path, metadata);
 					}
 				} catch (error) {
 					console.error('Error processing variable declaration:', error);
@@ -370,31 +351,6 @@ async function extractMetaData(sourceCode: string, filePath: string = ''): Promi
 						}
 					}
 				});
-			},
-
-			// Add handler for arrow function components
-			VariableDeclarator(path) {
-				if (path.node.init?.type === 'ArrowFunctionExpression' || 
-					path.node.init?.type === 'FunctionExpression') {
-					// Process variable declarations inside arrow functions
-					path.traverse({
-						VariableDeclarator(varPath) {
-							if (varPath.node.init) {
-								// Handle array literals
-								if (varPath.node.init.type === 'ArrayExpression') {
-									varPath.node.init.elements.forEach((element: any) => {
-										if (element?.type === 'StringLiteral') {
-											const text = element.value.trim();
-											if (shouldIncludeText(text)) {
-												metadata.textContent.push(text);
-											}
-										}
-									});
-								}
-							}
-						}
-					});
-				}
 			}
 		});
 
@@ -517,6 +473,20 @@ function getElementText(element: any): string {
 			.join(' ');
 	}
 	return '';
+}
+
+// Add this helper function outside the traverse object
+function handleArrayLiterals(path: any, metadata: MetaData) {
+	if (path.node.init?.type === 'ArrayExpression') {
+		path.node.init.elements.forEach((element: any) => {
+			if (element?.type === 'StringLiteral') {
+				const text = element.value.trim();
+				if (shouldIncludeText(text)) {
+					metadata.textContent.push(text);
+				}
+			}
+		});
+	}
 }
 
 // This method is called when your extension is deactivated

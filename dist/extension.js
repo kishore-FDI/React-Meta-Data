@@ -89,8 +89,8 @@ function activate(context) {
                         const content = fs.readFileSync(componentPath, 'utf-8');
                         const componentMetadata = await extractMetaData(content, componentPath);
                         metadata.components.push({
-                            filePath: path.relative(rootPath, componentPath),
-                            ...componentMetadata
+                            ...componentMetadata,
+                            filePath: path.relative(rootPath, componentPath)
                         });
                     }
                     catch (error) {
@@ -250,37 +250,18 @@ async function extractMetaData(sourceCode, filePath = '') {
             // Handle variable declarations (for non-exported variables)
             VariableDeclarator(path) {
                 try {
-                    if (path.node.init) {
-                        if (path.node.init.type === 'ArrayExpression') {
-                            path.node.init.elements.forEach((element) => {
-                                if (element.type === 'ObjectExpression') {
-                                    element.properties.forEach((prop) => {
-                                        // Skip JSX/SVG content
-                                        if (prop.key.name === 'icon') {
-                                            return;
-                                        }
-                                        // Extract string values
-                                        if (prop.value?.type === 'StringLiteral') {
-                                            const text = prop.value.value.trim();
-                                            if (shouldIncludeText(text)) {
-                                                metadata.textContent.push(text);
-                                            }
-                                        }
-                                        // Extract array values (like features)
-                                        else if (prop.value?.type === 'ArrayExpression') {
-                                            prop.value.elements.forEach((item) => {
-                                                if (item?.type === 'StringLiteral') {
-                                                    const text = item.value.trim();
-                                                    if (shouldIncludeText(text)) {
-                                                        metadata.textContent.push(text);
-                                                    }
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                            });
-                        }
+                    // Handle arrow function components
+                    if (path.node.init?.type === 'ArrowFunctionExpression' ||
+                        path.node.init?.type === 'FunctionExpression') {
+                        path.traverse({
+                            VariableDeclarator(varPath) {
+                                handleArrayLiterals(varPath, metadata);
+                            }
+                        });
+                    }
+                    // Handle regular variable declarations
+                    if (path.node.init?.type === 'ArrayExpression') {
+                        handleArrayLiterals(path, metadata);
                     }
                 }
                 catch (error) {
@@ -363,30 +344,6 @@ async function extractMetaData(sourceCode, filePath = '') {
                         }
                     }
                 });
-            },
-            // Add handler for arrow function components
-            VariableDeclarator(path) {
-                if (path.node.init?.type === 'ArrowFunctionExpression' ||
-                    path.node.init?.type === 'FunctionExpression') {
-                    // Process variable declarations inside arrow functions
-                    path.traverse({
-                        VariableDeclarator(varPath) {
-                            if (varPath.node.init) {
-                                // Handle array literals
-                                if (varPath.node.init.type === 'ArrayExpression') {
-                                    varPath.node.init.elements.forEach((element) => {
-                                        if (element?.type === 'StringLiteral') {
-                                            const text = element.value.trim();
-                                            if (shouldIncludeText(text)) {
-                                                metadata.textContent.push(text);
-                                            }
-                                        }
-                                    });
-                                }
-                            }
-                        }
-                    });
-                }
             }
         });
         // Remove duplicates and empty strings
@@ -493,6 +450,19 @@ function getElementText(element) {
             .join(' ');
     }
     return '';
+}
+// Add this helper function outside the traverse object
+function handleArrayLiterals(path, metadata) {
+    if (path.node.init?.type === 'ArrayExpression') {
+        path.node.init.elements.forEach((element) => {
+            if (element?.type === 'StringLiteral') {
+                const text = element.value.trim();
+                if (shouldIncludeText(text)) {
+                    metadata.textContent.push(text);
+                }
+            }
+        });
+    }
 }
 // This method is called when your extension is deactivated
 function deactivate() { }
